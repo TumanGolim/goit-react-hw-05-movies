@@ -1,5 +1,5 @@
 import React from 'react';
-import { Routes, Route, BrowserRouter, Navigate } from 'react-router-dom';
+import { Routes, Route,} from 'react-router-dom';
 import { QueryParamProvider } from 'use-query-params';
 
 import Home from './Home';
