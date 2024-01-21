@@ -57,19 +57,17 @@ const MovieDetails = () => {
   const goBack = () => {
     const previousPath = localStorage.getItem('previousPath') || '/';
 
-    // Удаляем информацию о запросе из URL
     const newPreviousPath = previousPath.replace(/\?query=.*/, '');
 
     localStorage.setItem('previousPath', newPreviousPath);
 
-    // Проверяем, с какой страницы был выполнен предыдущий переход
     const isMoviesPage = previousPath.includes('/movies');
     const isHomePage = previousPath === '/' || previousPath === '/movies';
 
     if (isMoviesPage) {
       navigate(newPreviousPath, { replace: true });
     } else if (isHomePage) {
-      navigate(-1); // Возврат на предыдущую страницу в истории
+      navigate(-1); 
     } else {
       navigate('/');
     }
