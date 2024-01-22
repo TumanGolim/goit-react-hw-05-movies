@@ -55,14 +55,14 @@ const MovieDetails = () => {
   };
 
   const goBack = () => {
-    if (activeTab === 'reviews' || activeTab === 'cast') {
+    if (activeTab === 'cast') {
+      navigate(-2);
+    } else if (activeTab === 'reviews') {
       navigate(-2);
     } else {
       navigate(-1);
     }
-  }
-
-  
+  };
 
   if (!movieDetails) {
     return <div>Loading...</div>;
