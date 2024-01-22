@@ -8,14 +8,14 @@ const Movies = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const [query, setQuery] = useState('');
-  const [searchResults, setSearchResults] = useState([]);
+  const [previousMovies, setPreviousMovies] = useState([]);
 
   const searchMovies = async () => {
     try {
       const response = await axios.get(
         `https://api.themoviedb.org/3/search/movie?api_key=${API_KEY}&query=${query}`
       );
-      setSearchResults(response.data.results);
+      const newSearchResults = response.data.results;
 
       const params = new URLSearchParams(location.search);
       params.set('query', query);
@@ -23,10 +23,12 @@ const Movies = () => {
       localStorage.setItem('previousPage', 'movies');
       localStorage.setItem('query', query);
 
+      setPreviousMovies(newSearchResults);
+      localStorage.setItem('previousMovies', JSON.stringify(newSearchResults));
+
       navigate(`?${params.toString()}`);
     } catch (error) {
       console.error('Error searching movies:', error);
-      setSearchResults([]);
     }
   };
 
@@ -41,6 +43,11 @@ const Movies = () => {
 
     localStorage.setItem('previousPage', 'movies');
     localStorage.setItem('query', queryParam);
+
+    const storedPreviousMovies = localStorage.getItem('previousMovies');
+    if (storedPreviousMovies) {
+      setPreviousMovies(JSON.parse(storedPreviousMovies));
+    }
   }, [location.search]);
 
   return (
@@ -53,9 +60,9 @@ const Movies = () => {
       <input type="text" value={query} onChange={handleInputChange} />
       <button onClick={searchMovies}>Search</button>
       <ul>
-        {searchResults.map(movie => (
+        {previousMovies.map(movie => (
           <li key={movie.id}>
-            <Link to={`/movies/${movie.id}?query=${query}`}>{movie.title}</Link>
+            <Link to={`/movies/${movie.id}`}>{movie.title}</Link>
           </li>
         ))}
       </ul>
