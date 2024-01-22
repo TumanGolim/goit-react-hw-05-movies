@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { Link, useNavigate, useParams } from 'react-router-dom';
+import { useParams, Link, useNavigate } from 'react-router-dom';
 
 const API_KEY = '6275ff62c216e0d575843f8efbbe5c76';
 
@@ -55,23 +55,14 @@ const MovieDetails = () => {
   };
 
   const goBack = () => {
-    const previousPath = localStorage.getItem('previousPath') || '/';
-
-    const newPreviousPath = previousPath.replace(/\?query=.*/, '');
-
-    localStorage.setItem('previousPath', newPreviousPath);
-
-    const isMoviesPage = previousPath.includes('/movies');
-    const isHomePage = previousPath === '/' || previousPath === '/movies';
-
-    if (isMoviesPage) {
-      navigate(newPreviousPath, { replace: true });
-    } else if (isHomePage) {
-      navigate(-1); 
+    if (activeTab === 'reviews' || activeTab === 'cast') {
+      navigate(-2);
     } else {
-      navigate('/');
+      navigate(-1);
     }
-  };
+  }
+
+  
 
   if (!movieDetails) {
     return <div>Loading...</div>;
